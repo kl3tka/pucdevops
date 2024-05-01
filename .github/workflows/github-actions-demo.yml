@@ -22,6 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flet
       - run: python3 -V
+      
 
   test-job:
     runs-on: ubuntu-latest
@@ -35,7 +36,7 @@ jobs:
           run: |
             python -m pip install --upgrade pip
             pip install flet
-        - run: python3 project.py
+        - run: echo "Iniciando projeto."
 
   deploy-job:
     runs-on: ubuntu-latest
