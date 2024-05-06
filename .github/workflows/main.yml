@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build HTML
+      run: echo "Não é necessário utilizar run para arquivos html."
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Test HTML
+      run: |
+        echo "Running tests..."
+        # Aqui você pode adicionar comandos para testar sua aplicação, por exemplo, usando linters ou testes de acessibilidade.
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to Server
+      run: |
+        echo "Deploying to server..."
+        # Adicione aqui os comandos para fazer o deploy da sua aplicação.
+        # Por exemplo, você pode usar SCP ou SSH para transferir os arquivos para o servidor.
+        # Ou, se estiver usando serviços de hospedagem como Netlify ou Vercel, você pode integrar com suas respectivas GitHub Actions.
