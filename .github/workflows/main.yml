@@ -1,37 +1,41 @@
-name: CI/CD Pipeline
+name: somativa2
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  build-job:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build HTML
-      run: echo "Não é necessário utilizar run para arquivos html."
+      - uses: actions/checkout@v3
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: | 
+      - uses: AppThreat/sast-scan-action@master
+        with:
+          type: "HTML"
+  deploy-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Test HTML
-      run: |
-        echo "Running tests..."
-        # Aqui você pode adicionar comandos para testar sua aplicação, por exemplo, usando linters ou testes de acessibilidade.
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+            username: ${{ secrets.kl3tka }}
+            password: ${{ secrets.pucdevops1 }}
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Deploy to Server
-      run: |
-        echo "Deploying to server..."
-        # Adicione aqui os comandos para fazer o deploy da sua aplicação.
-        # Por exemplo, você pode usar SCP ou SSH para transferir os arquivos para o servidor.
-        # Ou, se estiver usando serviços de hospedagem como Netlify ou Vercel, você pode integrar com suas respectivas GitHub Actions.
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: kl3tka/index:latest
